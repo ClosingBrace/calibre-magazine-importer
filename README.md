@@ -27,6 +27,25 @@ installed. Also the following Python modules must be available:
 
 ## Installation and Configuration
 
+### Installation
+
+The best way to install _Calibre Magazine Importer_ is to install it in a Python virtual
+environment using pip. With a symbolic link in a directory in the path to the
+`calibre-magazine-importer` executable, the tool is also available without manually activating the
+virtual environment.
+
+1. First, clone the git repository into a local directory. Let's call this `git-dir`.
+2. Create a virtual environment where you want to install _Calibre Magazine Importer_  
+`python3 -m venv <install-dir>`
+3. Activate the virtual environment  
+`source <install-dir>/bin/activate`
+4. Install _Calibre Magazine Importer_ using pip  
+`pip install <git-dir>`
+5. Create a symbolic link in a directory on the path (here `/usr/local/bin`)  
+`ln -s <install-dir>/bin/calibre-magazine-importer /usr/local/bin/calibre-magazine-importer`
+
+### Configuration
+
 TODO
 
 ## Usage
