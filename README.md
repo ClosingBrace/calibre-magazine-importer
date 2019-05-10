@@ -50,7 +50,19 @@ TODO
 
 ## Usage
 
-TODO
+_Calibre Magazine Importer_ is a command line tool. Its syntax is:
+
+```bash
+calibre-magazine-importer [-h] [-c CONFIG] [-v]
+```
+
+The optional arguments are:
+
+| option | description |
+|--------|-------------|
+| `-h, --help` | show this help message and exit |
+| `-c CONFIG, --config CONFIG` | configuration file for the importer (default: `$HOME/.calibre-magazine-importer`) |
+| `-v, --verbose` | be more verbose about the magazines that are imported |
 
 ## Changes / History
 
