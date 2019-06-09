@@ -9,6 +9,7 @@
 
 import argparse
 
+from closingbrace.calibre.configuration import ImporterConfiguration
 from os.path import expanduser
 
 
@@ -29,4 +30,6 @@ def parse_command_line():
 def run():
     """Run the importer application."""
     cmd_line = parse_command_line()
-    print(cmd_line.config)
+    importer_config = ImporterConfiguration(cmd_line.config)
+
+    importer_config.print()
