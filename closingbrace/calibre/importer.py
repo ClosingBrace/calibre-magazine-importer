@@ -31,5 +31,7 @@ def run():
     """Run the importer application."""
     cmd_line = parse_command_line()
     importer_config = ImporterConfiguration(cmd_line.config)
+    verbose = cmd_line.verbose
 
-    importer_config.print()
+    if verbose:
+        importer_config.print()
