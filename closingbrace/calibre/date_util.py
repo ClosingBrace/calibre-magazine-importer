@@ -7,6 +7,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+def to_year(number):
+    """Convert a number to a year. The number is assumed to consist of
+    one, two or of four digits. A one or two digit number is converted
+    to a year by adding 2000 to it. A four digit number is considered to
+    be a full year already.
+    """
+    if number < 100:
+        return 2000 + number
+    return number
+
+
 class Month(object):
     """A month of the year."""
 
