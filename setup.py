@@ -35,7 +35,7 @@ setup(
     ],
     packages=['closingbrace.calibre'],
     python_requires='~=3.3',
-    install_requires=[''],
+    install_requires=['parse==1.12.0'],
     entry_points={
         'console_scripts': [
             'calibre-magazine-importer=closingbrace.calibre.importer:run',

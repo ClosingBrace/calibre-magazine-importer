@@ -9,6 +9,7 @@
 
 from closingbrace.calibre.date_util import Month
 from closingbrace.calibre.date_util import to_year
+from parse import parse
 
 
 class MatchedMagazine(object):
@@ -136,3 +137,24 @@ def create_matched(match_tuple):
        string.
     """
     return MatchedMagazine(match_tuple[0], match_tuple[1], match_tuple[2])
+
+
+class MagazineMatcher(object):
+    """A class to match items against configured magazines."""
+
+    def __init__(self, magazines):
+        """Initialize the matcher, giving it the list of magazines to
+        match against.
+        """
+        self._magazines = magazines
+
+
+    def match(self, file):
+        """Match a file name against the list of magazines, returning
+        the matching magazines.
+        """
+        return [create_matched(match) for match in
+                ((mag, file, parse(mag.format, file)) for mag in
+                    self._magazines)
+                if match[2]
+                ]
