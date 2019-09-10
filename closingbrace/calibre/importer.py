@@ -8,8 +8,10 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import argparse
+import os
 
 from closingbrace.calibre.configuration import ImporterConfiguration
+from closingbrace.calibre.matcher import MagazineMatcher
 from os.path import expanduser
 
 
@@ -35,3 +37,17 @@ def run():
 
     if verbose:
         importer_config.print()
+        print(f"Processing files in directory {importer_config.import_dir}")
+        print()
+
+    matcher = MagazineMatcher(
+            [importer_config.get_magazine(mag_name)
+                for mag_name in importer_config.magazines]
+            )
+    files = next(os.walk(importer_config.import_dir))[2]
+    for file in files:
+        matched_magazines = matcher.match(file)
+
+        for match in matched_magazines:
+            if verbose:
+                match.print()
