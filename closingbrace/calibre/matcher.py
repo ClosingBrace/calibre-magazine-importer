@@ -125,3 +125,14 @@ class MatchedMagazine(object):
         print(f"  languages        : {self._languages}")
         print(f"  archive directory: {self._archivedir}")
         print()
+
+
+def create_matched(match_tuple):
+    """Create a matched magazine for the given match tuple. The tuple
+    contains three elements:
+    1. The magazine's configuration.
+    2. The file name.
+    3. The result of parsing the file name against the magazine's format
+       string.
+    """
+    return MatchedMagazine(match_tuple[0], match_tuple[1], match_tuple[2])
