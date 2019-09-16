@@ -15,6 +15,23 @@ from closingbrace.calibre.matcher import MagazineMatcher
 from os.path import expanduser
 
 
+class ImportError(Exception):
+    """Exception raised when something went wrong during the import of
+    a magazine.
+    """
+
+    def __init__(self, stdout_text, stderr_text):
+        """Initialize the exception, using the text that was output to
+        stdout and stderr to create an error text.
+        """
+        self._error_text = (f"  stdout: {stdout_text}\n  stderr: {stderr_text}")
+
+
+    def get_text(self):
+        """Get the error text from the exception."""
+        return self._error_text
+
+
 def parse_command_line():
     """Parse command line arguments.
     """
