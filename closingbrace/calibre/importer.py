@@ -79,6 +79,24 @@ def import_magazine(executable, library_path, file_path, magazine):
     return stdout_result[1]
 
 
+def set_publisher(executable, library_path, book_id, publisher):
+    """Set the publisher for an imported book. The location of the
+    Calibre library is given by library_path, and the executable used to
+    import the magazine is given by executable.
+    When setting the publisher failed, a ImportError is raised.
+    """
+    command = [executable, "set_metadata"]
+    if library_path is not None:
+        command.extend(["--library-path", library_path])
+    command.extend([f"-fpublisher:{publisher}", book_id])
+
+    exec_result = subprocess.run(command, universal_newlines=True,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    if exec_result.returncode != 0:
+        raise ImportError(exec_result.stdout, exec_result.stderr)
+
+
 def run():
     """Run the importer application."""
     cmd_line = parse_command_line()
