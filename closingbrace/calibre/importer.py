@@ -9,6 +9,9 @@
 
 import argparse
 import os
+import re
+import shutil
+import subprocess
 
 from closingbrace.calibre.configuration import ImporterConfiguration
 from closingbrace.calibre.matcher import MagazineMatcher
@@ -44,6 +47,36 @@ def parse_command_line():
     parser.add_argument("-v", "--verbose", help="be more verbose about "
             "the magazines that are imported", action="store_true")
     return parser.parse_args()
+
+
+def import_magazine(executable, library_path, file_path, magazine):
+    """Import a magazine into a Calibre library. The magazine's file
+    location is given by file_path, while metadata about the magazine is
+    given by magazine.
+    The location of the Calibre library is given by library_path, and
+    the executable used to import the magazine is given by executable.
+    The function returns the book id that the magazine got during
+    import.
+    When the import failed, a ImportError is raised.
+    """
+    command = [executable, "add"]
+    if library_path is not None:
+        command.extend(["--library-path", library_path])
+    command.extend(["--authors", magazine.authors,
+        "--languages", magazine.languages,
+        "--series", magazine.series,
+        "--series-index", magazine.number,
+        "--tags", magazine.tags,
+        "--title", magazine.title,
+        file_path])
+
+    exec_result = subprocess.run(command, universal_newlines=True,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout_result = re.match('Added book ids: (\d+)\\n$', exec_result.stdout)
+
+    if not stdout_result or exec_result.stderr:
+        raise ImportError(exec_result.stdout, exec_result.stderr)
+    return stdout_result[1]
 
 
 def run():
