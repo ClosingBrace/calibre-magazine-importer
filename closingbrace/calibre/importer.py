@@ -16,6 +16,7 @@ import subprocess
 from closingbrace.calibre.configuration import ImporterConfiguration
 from closingbrace.calibre.matcher import MagazineMatcher
 from os.path import expanduser
+from os.path import join
 
 
 class ImportError(Exception):
@@ -114,8 +115,45 @@ def run():
             )
     files = next(os.walk(importer_config.import_dir))[2]
     for file in files:
+        delete_file = True
+        file_path = join(importer_config.import_dir, file)
         matched_magazines = matcher.match(file)
+        if not matched_magazines:
+            continue
 
+        print(f"File '{file}'")
         for match in matched_magazines:
-            if verbose:
-                match.print()
+            try:
+                if verbose:
+                    match.print()
+
+                book_id = import_magazine(executable=importer_config.calibredb,
+                        library_path=importer_config.library_path,
+                        file_path=file_path,
+                        magazine=match)
+
+                set_publisher(executable=importer_config.calibredb,
+                        library_path=importer_config.library_path,
+                        book_id=book_id, publisher=match.publisher)
+                print("  - successfullly imported into library as '{}'".format(
+                    match.title))
+
+                archived_file = join(match.archivedir, match.filename)
+                shutil.copy(file_path, archived_file)
+                print(f"  - successfullly archived as '{archived_file}'")
+            except ImportError as import_error:
+                print(f" - NOT imported as '{match.title}'. Error:")
+                print(import_error.get_text())
+                print()
+                delete_file = False
+            except OSError as os_error:
+                print(f" - NOT archived as '{archived_file}'. Error:")
+                print(f"  {os_error}")
+                print()
+                delete_file = False
+
+        if delete_file:
+            os.unlink(file_path)
+            print(f"  - successfullly removed from download directory")
+
+        print()
