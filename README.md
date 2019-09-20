@@ -184,4 +184,5 @@ directory if one is given for the magazine, else it is deleted from the import d
 
 ## Changes / History
 
-TODO
+**v0.1.0 (20-sep-2019)**  
+First complete application.
